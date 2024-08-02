@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+</head>
+
+<body>
+    <header>
+        <div class="header-icon"></div>
+        <h1>Weather App</h1>
+    </header>
+    <div class="container">
+        <div class="overview">
+            <div class="current-weather">
+                <div class="conditions"></div>
+                <div class="day"></div>
+                <div class="today-icon"></div>
+                <div class="today-temp"></div>
+                <div class="unit-toggle">
+                    <button id="fahrenheit">°F</button>
+                    <button id="celsius">°C</button>
+                </div>
+                <div class="current-location"></div>
+                <div class="current-time"></div>
+                <form class="location-search">
+                    <input type="text" name="search" id="search" placeholder="Enter a city">
+                    <button type="button" class="search">Search</button>
+                </form>
+            </div>
+            <div class="additional-info">
+                <div class="feels-like">
+                    <div class="name-icon">
+                        <div class="feels-icon"></div>
+                        <p>Feels like</p>
+                    </div>
+                </div>
+                <div class="chance-of-rain">
+                    <div class="name-icon">
+                        <div class="rain-icon"></div>
+                        <p>Chance of Rain</p>
+                    </div>
+                </div>
+                <div class="humidity">
+                    <div class="name-icon">
+                        <div class="humidity-icon"></div>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="wind-speed">
+                    <div class="name-icon">
+                        <div class="wind-icon"></div>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+                <div class="sunrise">
+                    <div class="name-icon">
+                        <div class="sunrise-icon"></div>
+                        <p>Sunrise</p>
+                    </div>
+                </div>
+                <div class="sunset">
+                    <div class="name-icon">
+                        <div class="sunset-icon"></div>
+                        <p>Sunset</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="forecast">
+            <div class="week-hour-toggle">
+                <button id="hour">Hourly</button>
+                <button id="week">Week</button>
+            </div>
+            <div class="weather-over-time-scroll"></div>
+        </div>
+    </div>
+</body>
+
+</html>
