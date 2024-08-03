@@ -29,6 +29,7 @@
                     <input type="text" name="search" id="search" placeholder="Enter a city">
                     <button type="button" class="search">Search</button>
                 </form>
+                <div class="error"></div>
             </div>
             <div class="additional-info">
                 <div class="feels-like">
@@ -36,36 +37,42 @@
                         <div class="feels-icon"></div>
                         <p>Feels like</p>
                     </div>
+                    <div class="feels-like-temp"></div>
                 </div>
                 <div class="chance-of-rain">
                     <div class="name-icon">
                         <div class="rain-icon"></div>
                         <p>Chance of Rain</p>
                     </div>
+                    <div class="rain-chance"></div>
                 </div>
-                <div class="humidity">
+                <div class="todayHumidity">
                     <div class="name-icon">
                         <div class="humidity-icon"></div>
                         <p>Humidity</p>
                     </div>
+                    <div class="humidity"></div>
                 </div>
                 <div class="wind-speed">
                     <div class="name-icon">
                         <div class="wind-icon"></div>
                         <p>Wind Speed</p>
                     </div>
+                    <div class="wind-speed-value"></div>
                 </div>
                 <div class="sunrise">
                     <div class="name-icon">
                         <div class="sunrise-icon"></div>
                         <p>Sunrise</p>
                     </div>
+                    <div class="sunrise-time"></div>
                 </div>
                 <div class="sunset">
                     <div class="name-icon">
                         <div class="sunset-icon"></div>
                         <p>Sunset</p>
                     </div>
+                    <div class="sunset-time"></div>
                 </div>
             </div>
         </div>
@@ -75,7 +82,19 @@
                 <button id="hour">Hourly</button>
                 <button id="week">Week</button>
             </div>
-            <div class="weather-over-time-scroll"></div>
+            <div class="weather-over-time-scroll">
+                <!--Hourly Weather Format
+                <div class="hour">
+                    <div class="hour-time"></div> Lets do 24hrs for now but implement 12hr later
+                    <div class="icon"></div> Based on degrees
+                    <div class="temp"></div> this should be determined by C or F toggle
+                </div> -->
+                <!-- <div class="day">
+                    <div class="day-of-week">Sunday</div>
+                    <div class="icon"></div> Based on degrees
+                    <div class="temp"></div> this should be determined by C or F toggle
+                </div> -->
+            </div>
         </div>
     </div>
 </body>
