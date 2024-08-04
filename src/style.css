@@ -51,6 +51,11 @@ header {
     line-height: 1.5;
 }
 
+.additional-info>div {
+    display: flex;
+    gap: 10px;
+}
+
 .unit-toggle {
     display: flex;
     gap: 10px;
@@ -73,7 +78,7 @@ form {
 
 input#search,
 button.search {
-    padding: 5px;
+    padding: 10px;
     font-size: 18px;
     border-radius: 10px;
     border: 0;
@@ -90,6 +95,10 @@ button.search {
     color: white;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+}
+
+button.search:hover {
+    cursor: pointer;
 }
 
 .week-hour-toggle {
@@ -121,7 +130,7 @@ button#week {
     display: flex;
     background-color: aliceblue;
     justify-content: space-between;
-    margin: 20px;
+    margin: 0 auto;
     padding: 10px;
     border-radius: 10px;
     overflow-x: scroll;
@@ -129,15 +138,24 @@ button#week {
     width: 400px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     line-height: 1.5;
-    width: 90%;
+    width: 60%;
     font-size: 18px;
+    gap: 10px;
 }
 
 .hour {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 15px;
+    width: 50px;
+    padding: 0px 10px;
+}
+
+.hour-time {
+    font-size: 14px;
+    display: block;
+    margin: 0;
+    width: 50px;
 }
 
 .day {
