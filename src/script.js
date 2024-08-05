@@ -3,7 +3,8 @@ import './style.css'
 //Weather Data Class
 class WeatherData {
     constructor(data) {
-        this.location = data.resolvedAddress
+        this.location = data.resolvedAddress;
+        this.timezone = data.timezone;
         this.days = data.days.map(day => ({
             dateTime: day.datetime,
             temperature: day.temp,
@@ -62,6 +63,10 @@ form.addEventListener('submit', async event => {
 function displayWeather(weatherData) {
     //Assigning the first item in the days array to be the current day
     const currentDay = weatherData.days[0];
+    const timeZone = weatherData.timezone;
+
+    const currentLocalTime = convertTimezone(timeZone);
+    console.log(`Current time is ${new Date()} and the timezone is: ${timeZone}, and the local time formatted is ${currentLocalTime}`);
 
     //Select today weather 
     if (currentDay) {
@@ -77,14 +82,21 @@ function displayWeather(weatherData) {
         todayIcon.classList.add(currentDay.icon);
 
         const todayTemp = document.querySelector('.today-temp');
+        todayTemp.classList.add('temperature');
+        todayTemp.setAttribute('data-temp', currentDay.temperature)
+        todayTemp.setAttribute('data-unit', 'F')
         todayTemp.textContent = `${currentDay.temperature}°F`;
 
         const currentLocation = document.querySelector('.current-location');
         currentLocation.textContent = weatherData.location;
 
-        const currentTime = document.querySelector('current-time');
+        const currentTime = document.querySelector('.current-time');
+        currentTime.textContent = `As of ${currentLocalTime}`;
         //select additional info on today weather
         const feelsLike = document.querySelector('.feels-like-temp');
+        feelsLike.classList.add('temperature');
+        feelsLike.setAttribute('data-temp', currentDay.temperature)
+        feelsLike.setAttribute('data-unit', 'F')
         feelsLike.textContent = `${currentDay.feelsLike}°F`;
 
         const chanceOfRain = document.querySelector('.rain-chance');
@@ -120,11 +132,14 @@ function createHourCards(hour) {
     hourIcon.className = 'icon';
     hourTime.className = 'hour-time';
     hourTemp.className = 'temp';
-
+    hourTemp.classList.add('temperature');
     hourIcon.classList.add = hour.hourIcon;
 
     hourTime.textContent = formatTime(hour.time);
-    hourTemp.textContent = hour.temp;
+    hourTemp.textContent = `${hour.temp}°F`;
+
+    hourTemp.setAttribute('data-temp', hour.temp);
+    hourTemp.setAttribute('data-unit', 'F');
 
     hourContainer.appendChild(hourTime);
     hourContainer.appendChild(hourIcon);
@@ -156,9 +171,81 @@ function formatTime(timeString) {
     //Return formatted time
     return `${hour}:${minute.toString().padStart(2, '0')} ${period}`;
 }
+//Get local time of when data was fetched 
+function convertTimezone(timezone) {
+    //Get current local time
+    const localTime = new Date();
 
+    //Create options for formatting
+    const options = {
+        timeZone: timezone,
+        hour: 'numeric',
+        hour12: true
+    };
+
+    //Format local date to specified timezone
+    const formattedTime = new Intl.DateTimeFormat('en-US', options).format(localTime);
+
+    //Extract the hour and period
+    const [hour, period] = formattedTime.split(' ');
+
+    return `${parseInt(hour, 10)} ${period}`;
+}
 //Append weather icons based on data "icon" in API 
 
 //have C and F toggles
+function convertCelsius(temp) {
+    return (temp - 32) * 5 / 9;
+}
+
+function convertFahrenheit(temp) {
+    return (temp * 9 / 5) + 32;
+}
+
+//Convert alls
+function convertAllCelsius() {
+    const tempContainers = document.querySelectorAll('.temperature');
+
+    tempContainers.forEach(container => {
+        //Get current temp vlaue and unit from attribute
+        let tempF = parseFloat(container.getAttribute('data-temp'));
+        let unit = container.getAttribute('data-unit');
+
+        if (unit === 'F') {
+            //Convert to Celsius
+            let tempC = convertCelsius(tempF);
+
+            container.textContent = `${tempC.toFixed(1)}°C`
+
+            container.setAttribute('data-temp', tempC.toFixed(1))
+            container.setAttribute('data-unit', 'C');
+        }
+    })
+}
+
+function convertAllFahrenheit() {
+    const tempContainers = document.querySelectorAll('.temperature');
+
+    tempContainers.forEach(container => {
+        //Get current temp vlaue and unit from attribute
+        let tempC = parseFloat(container.getAttribute('data-temp'));
+        let unit = container.getAttribute('data-unit');
+
+        if (unit === 'C') {
+            //Convert to Celsius
+            let tempF = convertFahrenheit(tempC);
+
+            container.textContent = `${tempF.toFixed(1)}°F`
+
+            container.setAttribute('data-temp', tempF.toFixed(1))
+            container.setAttribute('data-unit', 'F');
+        }
+    })
+}
+addEventListener('DOMContentLoaded', () => {
+    document.querySelector('#fahrenheit').addEventListener('click', convertAllFahrenheit);
+
+    document.querySelector('#celsius').addEventListener('click', convertAllCelsius);
+})
 
 //have hourly/week toggles
