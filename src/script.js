@@ -26,7 +26,7 @@ class WeatherData {
         );
     }
 }
-
+let currentUnit = 'F';
 //Fetch using base http w apikey and URIencode in the link
 async function fetchData(input) {
     try {
@@ -107,7 +107,7 @@ function displayWeather(weatherData) {
         humidity.textContent = `${currentDay.humidity}%`;
 
         const windSpeed = document.querySelector('.wind-speed-value');
-        windSpeed.textContent = `${currentDay.windSpeed}m/s`;
+        windSpeed.textContent = `${currentDay.windSpeed}mph`;
 
         const sunrise = document.querySelector('.sunrise-time');
         sunrise.textContent = formatTime(currentDay.sunrise);
@@ -170,9 +170,16 @@ function createHourCards(hour) {
 
     hourTime.textContent = formatTime(hour.time);
 
-    hourTemp.textContent = `${hour.temp}°F`;
-    hourTemp.setAttribute('data-temp', hour.temp);
-    hourTemp.setAttribute('data-unit', 'F');
+    hourTemp.setAttribute('data-unit', currentUnit);
+
+    if (currentUnit === 'C') {
+        hourTemp.textContent = `${convertCelsius(hour.temp).toFixed(1)}°C`
+        hourTemp.setAttribute('data-temp', `${convertCelsius(hour.temp)}`);
+    }
+    else {
+        hourTemp.textContent = `${hour.temp}°F`;
+        hourTemp.setAttribute('data-temp', hour.temp)
+    }
 
     hourContainer.appendChild(hourTime);
     hourContainer.appendChild(hourIcon);
@@ -200,9 +207,15 @@ function createWeekCards(day) {
     dayTemp.className = 'temp';
     dayTemp.classList.add('temperature');
 
-    dayTemp.textContent = `${day.temperature}°F`;
-    dayTemp.setAttribute('data-temp', day.temperature);
-    dayTemp.setAttribute('data-unit', 'F');
+    dayTemp.setAttribute('data-unit', currentUnit);
+    if (currentUnit === 'C') {
+        dayTemp.textContent = `${convertCelsius(day.temperature).toFixed(1)}°C`
+        dayTemp.setAttribute('data-temp', `${convertCelsius(day.temperature)}`);
+    }
+    else {
+        dayTemp.textContent = `${day.temperature}°F`;
+        dayTemp.setAttribute('data-temp', day.temperature);
+    }
 
     dayContainer.appendChild(dayofWeek);
     dayContainer.appendChild(dayIcon);
@@ -310,8 +323,14 @@ function convertAllFahrenheit() {
 }
 addEventListener('DOMContentLoaded', () => {
     //Unit Conversion toggles
-    document.querySelector('#fahrenheit').addEventListener('click', (convertAllFahrenheit));
-    document.querySelector('#celsius').addEventListener('click', convertAllCelsius);
+    document.querySelector('#fahrenheit').addEventListener('click', () => {
+        currentUnit = 'F';
+        convertAllFahrenheit();
+    });
+    document.querySelector('#celsius').addEventListener('click', () => {
+        currentUnit = 'C';
+        convertAllCelsius();
+    });
 })
 
 
