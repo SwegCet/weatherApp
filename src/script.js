@@ -62,12 +62,19 @@ form.addEventListener('submit', async event => {
 })
 
 function displayWeather(weatherData) {
-    //Assigning the first item in the days array to be the current day
+    //Assigning the first two items in the days array to be the current day and next day
     const currentDay = weatherData.days[0];
+    const nextDay = weatherData.days[1];
+    const allHours = [...currentDay.hours, ...nextDay.hours];
     const timeZone = weatherData.timezone;
 
+    //Gets local time in area in 12hr Format
     const currentLocalTime = convertTimezone(timeZone);
-    console.log(`Current time is ${new Date()} and the timezone is: ${timeZone}, and the local time formatted is ${currentLocalTime}`);
+    console.log(currentLocalTime);
+
+    //Converts that local time and convert it back to 24hr
+    const current24HrTime = ConvertTwentyFourFormat(currentLocalTime);
+    console.log(current24HrTime);
 
     //Select today weather 
     if (currentDay) {
@@ -116,9 +123,25 @@ function displayWeather(weatherData) {
         sunset.textContent = formatTime(currentDay.sunset);
     }
 
-    //Default load current day for each hour
-    currentDay.hours.forEach(hour => createHourCards(hour));
+    //Find start index of hours
+    const startIndex = allHours.findIndex(hourData => {
+        const hourTime = hourData.time.substring(0, 5) //This extracts HH:MM from HH:MM:SS
+        return hourTime === current24HrTime; //Return the hour that matches up with local time
+    })
 
+
+    //Slice array to only show 24hrs of start index
+    const next24Hrs = allHours.slice(startIndex, startIndex + 24);
+
+    //This handles the case if the 24hrs span across 2 different days
+    if (next24Hrs.length < 24) {
+        next24Hrs.push(...allHours.slice(0, 24 - next24Hrs.length));
+    }
+
+    console.log(next24Hrs)
+
+    //Default load current day for each hour
+    next24Hrs.forEach(hour => createHourCards(hour));
 
     const hourButton = document.querySelector('#hour');
 
@@ -272,6 +295,26 @@ function convertTimezone(timezone) {
     return `${parseInt(hour, 10)} ${period}`;
 }
 
+//Convert current local time back to 24hr format
+function ConvertTwentyFourFormat(localTime) {
+    let [time, modifier] = localTime.split(' ');
+    let [hours, minutes] = time.split(':');
+    hours = parseInt(hours, 10);
+    minutes = parseInt(minutes, 10)
+
+    if (modifier === 'PM' && hours !== 12) {
+        hours += 12;
+    }
+    else if (modifier === 'AM' && hours === 12) {
+        hours = 0;
+    }
+
+    hours = hours.toString().padStart(2, '0');
+    minutes = minutes ? minutes.toString() : '00';
+    minutes = minutes.padStart(2, '0');
+    return `${hours}:${minutes}`;
+}
+
 //have C and F toggles
 function convertCelsius(temp) {
     return (temp - 32) * 5 / 9;
@@ -321,6 +364,7 @@ function convertAllFahrenheit() {
         }
     })
 }
+
 addEventListener('DOMContentLoaded', () => {
     //Unit Conversion toggles
     document.querySelector('#fahrenheit').addEventListener('click', () => {
