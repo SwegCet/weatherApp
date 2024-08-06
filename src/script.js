@@ -26,6 +26,7 @@ class WeatherData {
         );
     }
 }
+
 //Fetch using base http w apikey and URIencode in the link
 async function fetchData(input) {
     try {
@@ -115,8 +116,37 @@ function displayWeather(weatherData) {
         sunset.textContent = formatTime(currentDay.sunset);
     }
 
-    //Current day for each hour
+    //Default load current day for each hour
     currentDay.hours.forEach(hour => createHourCards(hour));
+
+
+    const hourButton = document.querySelector('#hour');
+
+    hourButton.addEventListener('click', () => {
+        console.log('Hour button was clicked');
+        const overTimeScroll = document.querySelector('.weather-over-time-scroll');
+        overTimeScroll.innerHTML = '';
+
+        currentDay.hours.forEach(hour => createHourCards(hour));
+    });
+
+
+
+    //Add event listener for week button
+    const weekButton = document.querySelector('#week');
+
+    weekButton.addEventListener('click', () => {
+        console.log('Week button was clicked');
+        const overTimeScroll = document.querySelector('.weather-over-time-scroll');
+        overTimeScroll.innerHTML = '';
+
+        //Iterate the days array
+        for (let i = 0; i < 7; i++) {
+            const day = weatherData.days[i];
+
+            createWeekCards(day);
+        }
+    })
 }
 
 //Create Hour cards in this function then use this function to do a for each hour
@@ -129,15 +159,18 @@ function createHourCards(hour) {
     const hourTemp = document.createElement('div');
 
     hourContainer.className = 'hour';
+
     hourIcon.className = 'icon';
+
     hourTime.className = 'hour-time';
+
     hourTemp.className = 'temp';
     hourTemp.classList.add('temperature');
-    hourIcon.classList.add = hour.hourIcon;
+    hourIcon.classList.add(hour.hourIcon);
 
     hourTime.textContent = formatTime(hour.time);
-    hourTemp.textContent = `${hour.temp}°F`;
 
+    hourTemp.textContent = `${hour.temp}°F`;
     hourTemp.setAttribute('data-temp', hour.temp);
     hourTemp.setAttribute('data-unit', 'F');
 
@@ -148,9 +181,43 @@ function createHourCards(hour) {
     overTimeScroll.appendChild(hourContainer);
 }
 
+function createWeekCards(day) {
+    const overTimeScroll = document.querySelector('.weather-over-time-scroll');
+
+    const dayContainer = document.createElement('div');
+    const dayofWeek = document.createElement('div');
+    const dayIcon = document.createElement('div');
+    const dayTemp = document.createElement('div');
+
+    dayContainer.className = 'dayContainer';
+
+    dayIcon.className = 'icon';
+    dayIcon.classList.add(day.icon);
+
+    dayofWeek.className = 'day-of-week';
+    dayofWeek.textContent = getDayOfWeek(day.dateTime);
+
+    dayTemp.className = 'temp';
+    dayTemp.classList.add('temperature');
+
+    dayTemp.textContent = `${day.temperature}°F`;
+    dayTemp.setAttribute('data-temp', day.temperature);
+    dayTemp.setAttribute('data-unit', 'F');
+
+    dayContainer.appendChild(dayofWeek);
+    dayContainer.appendChild(dayIcon);
+    dayContainer.appendChild(dayTemp);
+
+    overTimeScroll.appendChild(dayContainer);
+}
+
+
 //Convert YYYY-MM-DD format to a Day of the week
 function getDayOfWeek(dateString) {
-    const date = new Date(dateString);
+    const [year, month, day] = dateString.split('-').map(Number);
+
+    const date = new Date(year, month - 1, day);
+
     const options = { weekday: 'long' };
     return new Intl.DateTimeFormat('en-US', options).format(date);
 }
@@ -191,7 +258,6 @@ function convertTimezone(timezone) {
 
     return `${parseInt(hour, 10)} ${period}`;
 }
-//Append weather icons based on data "icon" in API 
 
 //have C and F toggles
 function convertCelsius(temp) {
@@ -243,9 +309,10 @@ function convertAllFahrenheit() {
     })
 }
 addEventListener('DOMContentLoaded', () => {
-    document.querySelector('#fahrenheit').addEventListener('click', convertAllFahrenheit);
-
+    //Unit Conversion toggles
+    document.querySelector('#fahrenheit').addEventListener('click', (convertAllFahrenheit));
     document.querySelector('#celsius').addEventListener('click', convertAllCelsius);
 })
 
-//have hourly/week toggles
+
+//Append weather icons based on data "icon" in API 
