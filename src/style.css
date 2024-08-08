@@ -14,9 +14,85 @@ body {
 header {
     display: flex;
     justify-content: center;
-    margin: 20px;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: lightcoral;
 }
 
+/*Icon sections*/
+.clear,
+.clear-day {
+    background-image: url('../src/svgs/sunny.svg');
+    height: 50px;
+    width: 50px;
+}
+
+.rain {
+    background-image: url('../src/svgs/rain.svg');
+    height: 50px;
+    width: 50px;
+}
+
+.cloudy,
+.overcast,
+.partly-cloudy-day {
+    background-image: url('../src/svgs/partly-cloudy.svg');
+    height: 50px;
+    width: 50px;
+}
+
+.partly-cloudy-night {
+    background-image: url('../src/svgs/night-partly-cloudy.svg');
+    height: 50px;
+    width: 50px;
+}
+
+.clear-night {
+    background-image: url('../src/svgs/moon.svg');
+    height: 50px;
+    width: 50px;
+}
+
+.feels-icon {
+    background-image: url('../src/svgs/feelslike.svg');
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.rain-icon {
+    background-image: url('../src/svgs/chanceofrain.svg');
+    height: 50px;
+    width: 50px;
+}
+
+.humidity-icon {
+    background-image: url('../src/svgs/humidity.svg');
+    height: 50px;
+    width: 50px;
+}
+
+.wind-icon {
+    background-image: url('./svgs/windspeed.svg');
+    height: 50px;
+    width: 50px;
+}
+
+.sunrise-icon {
+    background-image: url('../src/svgs/sunrise.svg');
+    height: 50px;
+    width: 50px;
+}
+
+.sunset-icon {
+    background-image: url('../src/svgs/sunset.svg');
+    height: 50px;
+    width: 50px;
+}
+
+
+
+/*End of Icon Section*/
 .container {
     background-color: lightblue;
     display: flex;
@@ -54,6 +130,13 @@ header {
 .additional-info>div {
     display: flex;
     gap: 10px;
+}
+
+.name-icon {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
 }
 
 .unit-toggle {
