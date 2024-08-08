@@ -32,11 +32,11 @@ async function fetchData(input) {
     try {
         const apiKey = '4FTEFML9N6VESYMLQRJW4RYL8';
         const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodeURI(input)}?key=${apiKey}`)
-        console.log(response);
+
 
         const data = await response.json();
+        document.querySelector('.error').textContent = '';
 
-        console.log(data);
         return data;
     } catch (error) {
         console.log('Error fetching data: ', error);
@@ -48,10 +48,14 @@ const form = document.querySelector('.location-search')
 
 form.addEventListener('submit', async event => {
     event.preventDefault();
-    console.log('form was clicked');
     const input = document.querySelector('#search').value;
 
     const data = await fetchData(input);
+
+    const overTimeScroll = document.querySelector('.weather-over-time-scroll');
+    if (overTimeScroll.children.length > 0) { //specifies that the scroll has some data
+        overTimeScroll.innerHTML = '';
+    }
 
     if (data) {
         //Put data in class if exists
@@ -59,6 +63,10 @@ form.addEventListener('submit', async event => {
         //call function to display weather data
         displayWeather(weatherData);
     }
+
+    const search = document.querySelector('#search');
+
+    search.value = '';
 })
 
 function displayWeather(weatherData) {
@@ -70,11 +78,9 @@ function displayWeather(weatherData) {
 
     //Gets local time in area in 12hr Format
     const currentLocalTime = convertTimezone(timeZone);
-    console.log(currentLocalTime);
 
     //Converts that local time and convert it back to 24hr
     const current24HrTime = ConvertTwentyFourFormat(currentLocalTime);
-    console.log(current24HrTime);
 
     //Select today weather 
     if (currentDay) {
@@ -138,19 +144,16 @@ function displayWeather(weatherData) {
         next24Hrs.push(...allHours.slice(0, 24 - next24Hrs.length));
     }
 
-    console.log(next24Hrs)
-
     //Default load current day for each hour
     next24Hrs.forEach(hour => createHourCards(hour));
 
     const hourButton = document.querySelector('#hour');
 
     hourButton.addEventListener('click', () => {
-        console.log('Hour button was clicked');
         const overTimeScroll = document.querySelector('.weather-over-time-scroll');
         overTimeScroll.innerHTML = '';
 
-        currentDay.hours.forEach(hour => createHourCards(hour));
+        next24Hrs.forEach(hour => createHourCards(hour));
     });
 
 
@@ -159,7 +162,6 @@ function displayWeather(weatherData) {
     const weekButton = document.querySelector('#week');
 
     weekButton.addEventListener('click', () => {
-        console.log('Week button was clicked');
         const overTimeScroll = document.querySelector('.weather-over-time-scroll');
         overTimeScroll.innerHTML = '';
 
