@@ -1,5 +1,4 @@
 import './style.css'
-
 //Weather Data Class
 class WeatherData {
     constructor(data) {
@@ -32,8 +31,7 @@ async function fetchData(input) {
     try {
         const apiKey = '4FTEFML9N6VESYMLQRJW4RYL8';
         const response = await fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodeURI(input)}?key=${apiKey}`)
-
-
+        
         const data = await response.json();
         document.querySelector('.error').textContent = '';
 
@@ -56,16 +54,13 @@ form.addEventListener('submit', async event => {
     if (overTimeScroll.children.length > 0) { //specifies that the scroll has some data
         overTimeScroll.innerHTML = '';
     }
-
     if (data) {
         //Put data in class if exists
         const weatherData = new WeatherData(data);
         //call function to display weather data
         displayWeather(weatherData);
     }
-
     const search = document.querySelector('#search');
-
     search.value = '';
 })
 
@@ -106,6 +101,7 @@ function displayWeather(weatherData) {
 
         const currentTime = document.querySelector('.current-time');
         currentTime.textContent = `As of ${currentLocalTime}`;
+        
         //select additional info on today weather
         const feelsLike = document.querySelector('.feels-like-temp');
         feelsLike.classList.add('temperature');
@@ -134,8 +130,7 @@ function displayWeather(weatherData) {
         const hourTime = hourData.time.substring(0, 5) //This extracts HH:MM from HH:MM:SS
         return hourTime === current24HrTime; //Return the hour that matches up with local time
     })
-
-
+    
     //Slice array to only show 24hrs of start index
     const next24Hrs = allHours.slice(startIndex, startIndex + 24);
 
@@ -155,8 +150,6 @@ function displayWeather(weatherData) {
 
         next24Hrs.forEach(hour => createHourCards(hour));
     });
-
-
 
     //Add event listener for week button
     const weekButton = document.querySelector('#week');
@@ -241,11 +234,9 @@ function createWeekCards(day) {
         dayTemp.textContent = `${day.temperature}°F`;
         dayTemp.setAttribute('data-temp', day.temperature);
     }
-
     dayContainer.appendChild(dayofWeek);
     dayContainer.appendChild(dayIcon);
     dayContainer.appendChild(dayTemp);
-
     overTimeScroll.appendChild(dayContainer);
 }
 
@@ -378,6 +369,3 @@ addEventListener('DOMContentLoaded', () => {
         convertAllCelsius();
     });
 })
-
-
-//Append weather icons based on data "icon" in API 
